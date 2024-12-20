@@ -1,5 +1,6 @@
 #include <stdio.h>
+#include "regex.h"
+int main(size_t argc,char **argv){
 
-int main(){
     return 0;
 }
