@@ -21,46 +21,45 @@ bool errorChecker(size_t argc,char **argv){
     return true;
 }
 
-void replacer(const char *filename, const char *oldText, const char *newText) {
-    FILE *file = fopen(filename, "r+");
-    char line[MAX_LINE_LENGTH];
-    char buffname[] = "temp_file.txt";
-    FILE *buff = fopen(buffname, "w");
 
-    if (file == NULL) {
+void replacer(const char *filename, const char *oldText, const char *newText) {
+    FILE *file = fopen(filename, "r");
+    FILE *tempFile = fopen("temp_file.txt", "w");
+    char line[MAX_LINE_LENGTH];
+    char *ptr, *start;
+
+    if (file == NULL || tempFile == NULL) {
         perror("Error opening file");
-        return;
-    }
-    if (buff == NULL) {
-        perror("Error creating buff file");
-        fclose(file);
         return;
     }
 
     while (fgets(line, sizeof(line), file)) {
-        char *ptr = strstr(line, oldText);
-        if (ptr != NULL) {
-            char *restOfLine = ptr + strlen(oldText);
-            fprintf(buff, "%.*s%s%s", (int)(ptr - line), line, newText, restOfLine);
-        } else {
-            fprintf(buff, "%s", line);
+        start = line;
+        while ((ptr = strstr(start, oldText)) != NULL) {
+            fwrite(start, 1, ptr - start, tempFile);
+            fwrite(newText, 1, strlen(newText), tempFile);
+            start = ptr + strlen(oldText);
         }
+        fwrite(start, 1, strlen(start), tempFile);
     }
 
     fclose(file);
-    fclose(buff);
+    fclose(tempFile);
 
     if (remove(filename) != 0) {
         perror("Error removing original file");
         return;
     }
-    if (rename(buffname, filename) != 0) {
+
+    if (rename("temp_file.txt", filename) != 0) {
         perror("Error renaming temporary file");
         return;
     }
 
-    printf("Replace completed successfully\n");
+    printf("Replacement completed successfully\n");
 }
+
+
 
 void toBegin(const char *filename, const char *word) {
     FILE *file = fopen(filename, "r+");
