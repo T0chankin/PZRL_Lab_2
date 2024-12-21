@@ -1,3 +1,4 @@
 main.o
 regex.o
 sed_simplified.exe
+sed_simplified
