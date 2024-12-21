@@ -8,6 +8,7 @@ regex.o: regex.c
 $(TARGET): main.o regex.o
 	gcc  main.o regex.o -o $(TARGET)
 run:$(TARGET)
-	./$(TARGET) input.txt 's/old_text_regex/new_text/'
+	./$(TARGET) input.txt -r "old tex" "new text"
+
 clean:
 	rm $(TARGET) *.o
