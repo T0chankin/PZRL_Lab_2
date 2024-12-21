@@ -95,7 +95,7 @@ void toBegin(const char *filename, const char *word) {
         return;
     }
 
-    printf("word added successfully.\n");
+    printf("word added successfully\n");
 }
 
 void toEnd(const char *filename, const char *word) {
@@ -131,7 +131,7 @@ void toEnd(const char *filename, const char *word) {
         return;
     }
 
-    printf("word added successfully.\n");
+    printf("word added successfully\n");
 }
 
 void operator(size_t argc, char **argv){
@@ -146,25 +146,24 @@ void operator(size_t argc, char **argv){
         replacer(argv[1],argv[3]," ");
         break;
     case 'i':
-
         switch (argv[3][1])
         {
         case 'f':
-            printf("flag i ^\n");
+            
             toBegin(argv[1],argv[4]);
             break;
         case 'b':
-            printf("flag i$\n");
+            
             toEnd(argv[1],argv[4]);
             break;
         
-        break;
         default:
-        printf("not flag");
-        break;
+            printf("not flag");
+            break;
         }
+        break;
     default:
-    printf("Error wrong flag\n");
+        printf("Error wrong flag\n");
         break;
     }
 }
